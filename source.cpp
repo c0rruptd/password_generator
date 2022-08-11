@@ -10,7 +10,7 @@ std::ostream& operator<<(std::ostream& stream, std::vector<uint32_t> char_stats)
 	stream << "Special Characters: " << char_stats[3] << std::endl;
 	return stream;
 }
-
+#if 1
 int main() {
 	std::string sample_string = "Aa1!";
 	std::string sample_password1 = generate_password(18); // generates a 16-char-password 
@@ -36,3 +36,8 @@ int main() {
 	std::cout << "After removing duplicates: " << sample_password2 << std::endl;
 	std::cout << "Any duplicates? " << any_dupes(sample_password2) << std::endl;
 }
+#elif 0
+int main() { // for debugging later
+	
+}
+#endif
