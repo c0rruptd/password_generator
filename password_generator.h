@@ -27,6 +27,8 @@ enum char_type {
 
 _PASSGEN_BEGIN
 int random_int(int lower_bound = 0, int upper_bound = ascii_length) {
+	if (lower_bound >= upper_bound)
+		return;
 	uint32_t seed = (uint32_t)std::chrono::steady_clock::now().time_since_epoch().count();
 	std::default_random_engine engine(seed);
 	std::uniform_int_distribution<int> distribution(lower_bound, upper_bound);
@@ -34,8 +36,10 @@ int random_int(int lower_bound = 0, int upper_bound = ascii_length) {
 };
 
 bool compare_w2(const int lower_bound, const int value, const int upper_bound) {
-	if (lower_bound <= value && value <= upper_bound) { return true; }
-	else { return false; }
+	if (lower_bound <= value && value <= upper_bound) 
+		return true; 
+	else 
+		return false; 
 }
 
 double max_entropy(const double password_length) { return password_length * log2(94); }
