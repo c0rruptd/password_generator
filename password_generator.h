@@ -19,9 +19,9 @@ public:
 };
 
 enum char_type {
-	upper_ = 0,
-	lower_ = 1,
-	digit_ = 2,
+	upper_   = 0,
+	lower_   = 1,
+	digit_   = 2,
 	special_ = 3
 };
 
@@ -41,6 +41,7 @@ bool compare_w2(const int lower_bound, const int value, const int upper_bound) {
 double max_entropy(const double password_length) { return password_length * log2(94); }
 
 char_type chartypeof(const char character) {
+	// compares the ascii value of char to ranges of different char types
 	bool is_uppercase = compare_w2(65, int(character), 90);
 	bool is_lowercase = compare_w2(97, int(character), 122);
 	bool is_digit	  = compare_w2(48, int(character), 57);
@@ -49,16 +50,24 @@ char_type chartypeof(const char character) {
 		compare_w2(58, int(character), 64) || \
 		compare_w2(91, int(character), 96) || \
 		compare_w2(123, int(character), 126);
-	if      (is_uppercase)	  { return upper_; }
-	else if (is_lowercase)    { return lower_; }
-	else if (is_digit)        { return digit_; }
-	else if (is_special_char) { return special_; }
+
+	if      (is_uppercase)
+		return upper_; 
+
+	else if (is_lowercase)   
+		return lower_; 
+
+	else if (is_digit)        
+		return digit_; 
+
+	else if (is_special_char) 
+		return special_; 
 };
 
 std::vector<uint32_t> char_stats(const std::string& str) {
 	uint32_t upper_count = NULL, lower_count = NULL, digit_count = NULL, special_count = NULL;
 	for (uint32_t i = 0; i < str.size(); i++) {
-		if (chartypeof(str[i]) == 0) 
+		if		(chartypeof(str[i]) == 0) 
 			upper_count++;
 		
 		else if (chartypeof(str[i]) == 1) 
@@ -162,25 +171,32 @@ void enlarge_pool(std::string& password) {
 	const char digit_pool[] = "0123456789";
 	const char special_pool[] = "!\"#$%&\'()*+,-./:;<=>?";
 
-	const uint32_t upper_length = sizeof(upper_pool) / sizeof(char);
-	const uint32_t lower_length = sizeof(lower_pool) / sizeof(char);
-	const uint32_t digit_length = sizeof(digit_pool) / sizeof(char);
+	const uint32_t upper_length   = sizeof(upper_pool)   / sizeof(char);
+	const uint32_t lower_length   = sizeof(lower_pool)   / sizeof(char);
+	const uint32_t digit_length   = sizeof(digit_pool)   / sizeof(char);
 	const uint32_t special_length = sizeof(special_pool) / sizeof(char);
-	if (entropy_bits(password) == max_entropy(password.size())) { return; } // if the password is already strong discards
+	if (entropy_bits(password) == max_entropy(password.size())) 
+		return;  // if the password is already strong discards
 	else {
 		Vector2<uint32_t> instruction(1, 0); // for storing the pools to replace
 		std::vector<uint32_t> password_stats = char_stats(password);
 
 		for (uint32_t i = 0; i < password_stats.size(); i++) {
-			if (password_stats[i] > instruction.x) { instruction.x = i; } // finds the largest amount of char type
-			else if (password_stats[i] == 0) { instruction.y = i; } // finds the missing char type
+			if (password_stats[i] > instruction.x) 
+				instruction.x = i;// finds the largest amount of char type
+			else if (password_stats[i] == 0) 
+				instruction.y = i; // finds the missing char type
 		}
 		for (uint32_t i = 0; i < password.size(); i++) {
 			if (chartypeof(password[i]) == instruction.x) {
-				if (instruction.y == 0) { password[i] = upper_pool[random_int(0, upper_length)]; } // if the missing char type is a upper case char
-				else if (instruction.y == 1) { password[i] = lower_pool[random_int(0, lower_length)]; } // if the missing char type is a lower case char
-				else if (instruction.y == 2) { password[i] = digit_pool[random_int(0, digit_length)]; } // if the missing char type is a digit char
-				else if (instruction.y == 3) { password[i] = special_pool[random_int(0, special_length)]; } // if the missing char type is a special char
+				if (instruction.y == 0) 
+					password[i] = upper_pool[random_int(0, upper_length)];  // if the missing char type is a upper case char
+				else if (instruction.y == 1)  
+					password[i] = lower_pool[random_int(0, lower_length)]; // if the missing char type is a lower case char
+				else if (instruction.y == 2)  
+					password[i] = digit_pool[random_int(0, digit_length)];  // if the missing char type is a digit char
+				else if (instruction.y == 3) 
+					password[i] = special_pool[random_int(0, special_length)]; // if the missing char type is a special char
 				break;
 			}
 		}
@@ -191,21 +207,23 @@ void enlarge_pool(std::string& password) {
 
 std::string generate_password(uint32_t length = 8) {
 	std::string password(length, ' ');
-	for (uint32_t i = 0; i < password.size(); i++) { password[i] = ascii_pool[random_int()]; }
+	for (uint32_t i = 0; i < password.size(); i++) 
+		password[i] = ascii_pool[random_int()]; 
 	enlarge_pool(password);
 	return password;
 }
 
 bool any_dupes(std::string& str) {
-	for (size_t i = 1; i < str.size() - 1; i++) {
-		if (str[i] == str[i + 1] || str[i] == str[i - 1]) { return true; }
-	}
+	for (size_t i = 1; i < str.size() - 1; i++) 
+		if (str[i] == str[i + 1] || str[i] == str[i - 1]) 
+			return true;
 	return false;
 }
 
 void remove_duplicates(std::string& str) {
 	for (size_t i = 1; i < str.size() - 1; i++) {
-		while (str[i] == str[i + 1] || str[i] == str[i - 1]) { str[i] = ascii_pool[random_int()]; }
+		while (str[i] == str[i + 1] || str[i] == str[i - 1])  
+			str[i] = ascii_pool[random_int()]; 
 	}
 }
 _PASSGEN_END
