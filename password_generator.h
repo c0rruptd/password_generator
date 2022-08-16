@@ -28,7 +28,7 @@ enum char_type {
 _PASSGEN_BEGIN
 int random_int(int lower_bound = 0, int upper_bound = ascii_length) {
 	if (lower_bound >= upper_bound)
-		return;
+		return 0;
 	uint32_t seed = (uint32_t)std::chrono::steady_clock::now().time_since_epoch().count();
 	std::default_random_engine engine(seed);
 	std::uniform_int_distribution<int> distribution(lower_bound, upper_bound);
