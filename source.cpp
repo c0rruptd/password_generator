@@ -13,11 +13,11 @@ std::ostream& operator<<(std::ostream& stream, std::vector<uint32_t> char_stats)
 #if 1
 int main() {
 	std::string sample_string = "Aa1!";
-	std::string sample_password1 = generate_password(18); // generates a 16-char-password 
+	std::string sample_password1 = generate_password(18); // generates a 18-char-password 
 	std::string sample_password2 = "QDMM,MNi0ISP7dYi";    // sample password for demonstrating remove_duplicate() & any_dupes() functions
 
 	std::cout << "Random integer: " << random_int(0, 10) << std::endl; // generates a random integer between 0 and 10
-	std::cout << "Maximum entropy of a 16 character password: " << max_entropy(16) << std::endl << std::endl;
+	std::cout << "Maximum entropy of a 18 character password: " << max_entropy(18) << std::endl << std::endl;
 	// returns the maximum possible entropy bits of a 16 char password
 	std::cout << "Char type of 'A': " << chartypeof('A') << ":" << std::endl; // returns char type
 
@@ -38,6 +38,6 @@ int main() {
 }
 #elif 0
 int main() { // for debugging later
-
+	
 }
 #endif
